@@ -32,8 +32,7 @@ export const Chat = () => {
                 if (data.sid === 'gpt') {
                     for (let i = 0; i < pm.length; ++i) {
                         if (pm[i].type === 'chat' && pm[i].sid !== 'gpt') return [...prevMessages, {
-                            ...data,
-                            type: 'chat'
+                            ...data, type: 'chat'
                         }]
                         if (pm[i].sid === 'gpt') {
                             pm[i].message = pm[i].message + data.message
@@ -59,9 +58,7 @@ export const Chat = () => {
                 display: 'flex',
                 flexDirection: 'column'
             }}>
-                {messages.map((message, index) => (
-                    <Message message={message} key={index}/>
-                ))}
+                {messages.map((message, index) => (<Message message={message} key={index}/>))}
             </div>
 
             <input type='text' id='message' onChange={(event) => {
@@ -70,14 +67,12 @@ export const Chat = () => {
             }}/>
 
             <button onClick={() => {
-                if (message && message.length) {
-                    socket.emit('chat', message)
-                }
+                if (message && message.length)
+                    axios.post(process.env.REACT_APP_API_URL + '/chat', {message}).then(() => null)
+
                 let messageBox = document.getElementById('message')
                 messageBox.value = ''
                 setMesage('')
-                axios.get(process.env.REACT_APP_API_URL + '/' + message).then(r => {
-                })
             }}>Send
             </button>
         </>
